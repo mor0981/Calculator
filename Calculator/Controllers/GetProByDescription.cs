@@ -17,7 +17,7 @@ namespace Calculator.Controllers
             return Ok("Hello World");
         }
 
-        [HttpPost]
+        [HttpPost("GetProduc")]
         public String Post(String name)
         {
             var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
@@ -44,7 +44,7 @@ namespace Calculator.Controllers
 
         }
 
-        [HttpGet("GetProduc")]
+        [HttpGet("GetDetails")]
         public String GetProductDetailsByProductCode(string productCode)
         {
             string url = "https://fe.gs1-retailer.mk101.signature-it.com/external/product/" + productCode + ".json?hq=1";
