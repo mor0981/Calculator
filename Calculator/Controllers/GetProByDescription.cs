@@ -39,7 +39,7 @@ namespace Calculator.Controllers
 "}";
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             RestResponse response = client.Execute(request);
-            return Ok(response.Content);
+            return Ok("Hello World");
 
 
         }
