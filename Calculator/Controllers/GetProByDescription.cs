@@ -17,8 +17,8 @@ namespace Calculator.Controllers
             return Ok("Hello World");
         }
 
-        [HttpPost("GetProduc")]
-        public IActionResult Post(String name)
+        [HttpGet("GetProduc")]
+        public String Post(String name)
         {
             var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
             var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json",Method.Post);
@@ -39,7 +39,7 @@ namespace Calculator.Controllers
 "}";
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             RestResponse response = client.Execute(request);
-            return Ok("Hello World");
+            return response.Content;
 
 
         }
