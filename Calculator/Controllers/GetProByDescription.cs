@@ -18,7 +18,7 @@ namespace Calculator.Controllers
         }
 
         [HttpGet("GetProduc")]
-        public String Post(String name)
+        public string Post(string name)
         {
             var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
             var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json",Method.Post);
@@ -33,10 +33,7 @@ namespace Calculator.Controllers
 " + "\n" +
             @"}";
 
-            string a= "{\n" +
-"    \"query\": \"Trade_Item_Description like 'שוקו%'\",\n" +
-"    \"get_chunks\": { \"start\": 0, \"rows\": 100 }\n" +
-"}";
+           
             request.AddParameter("application/json", body, ParameterType.RequestBody);
             RestResponse response = client.Execute(request);
             return response.Content;
@@ -45,7 +42,7 @@ namespace Calculator.Controllers
         }
 
         [HttpGet("GetDetails")]
-        public String GetProductDetailsByProductCode(string productCode)
+        public string GetProductDetailsByProductCode(string productCode)
         {
             string url = "https://fe.gs1-retailer.mk101.signature-it.com/external/product/" + productCode + ".json?hq=1";
             var client = new RestClient(url);
@@ -55,6 +52,21 @@ namespace Calculator.Controllers
             request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
             RestResponse response = client.Execute(request);
             return response.Content;
+        }
+
+        [HttpGet("GetImage")]
+        public string GetProductImageByProductCode(string productCode,string media)
+        {
+            string url = "https://fe.gs1-retailer.mk101.signature-it.com/external/product/"+ productCode + "/files?media="+ media+ "&hq=1";
+            var client = new RestClient(url);
+            var request = new RestRequest(url, Method.Get);
+            request.AddHeader("Authorization", "Basic VG9wYXo6Zk82QDE3WDQ=");
+            request.AddHeader("Content-Type", "application/jpg");
+            request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
+            RestResponse response = client.Execute(request);
+            JObject v = JObject.Parse(response.Content);
+            string b = v.GetValue("file").ToString();
+            return b;
         }
 
     }
