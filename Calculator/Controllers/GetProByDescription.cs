@@ -23,6 +23,7 @@ namespace Calculator.Controllers
             var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
             var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json",Method.Post);
             request.AddHeader("Authorization", "Basic VG9wYXo6Zk82QDE3WDQ=");
+            request.AddHeader("Access-Control-Allow-Origin", '*');
             request.AddHeader("Content-Type", "application/json");
             request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
             var body = @"{
