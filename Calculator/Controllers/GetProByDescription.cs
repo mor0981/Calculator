@@ -4,11 +4,13 @@ using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using RestSharp;
+using Microsoft.AspNetCore.Cors;
 
 namespace Calculator.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("MyCors")]
     public class GetProByDescription : ControllerBase
     {
         [HttpGet]
