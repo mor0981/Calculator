@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using RestSharp;
 using Microsoft.AspNetCore.Cors;
+using Newtonsoft.Json;
 
 namespace Calculator.Controllers
 {
@@ -58,8 +59,11 @@ namespace Calculator.Controllers
         }
 
         [HttpGet("GetImage")]
-        public string GetProductImageByProductCode(string productCode,string media)
+        public string GetProductImageByProductCodeandMedia(string productCode)
         {
+            string res = GetProductDetailsByProductCode(productCode);
+            dynamic dynamicObject = JsonConvert.DeserializeObject(res);
+            var media = dynamicObject[0]["media_assets"][1]["id"];
             string url = "https://fe.gs1-retailer.mk101.signature-it.com/external/product/"+ productCode + "/files?media="+ media+ "&hq=1";
             var client = new RestClient(url);
             var request = new RestRequest(url, Method.Get);
