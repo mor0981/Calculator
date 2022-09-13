@@ -75,6 +75,5 @@ namespace Calculator.Controllers
             string b = v.GetValue("file").ToString();
             return b;
         }
-
     }
 }
