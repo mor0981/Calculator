@@ -33,7 +33,7 @@ namespace Calculator.Controllers
 " + "\n" +
             @"    ""query"": ""Trade_Item_Description like '" +name+ @"%'"",
 " + "\n" +
-            @"    ""get_chunks"": { ""start"": 0, ""rows"": 100 }
+            @"    ""get_chunks"": { ""start"": 0, ""rows"": 5 }
 " + "\n" +
             @"}";
 
