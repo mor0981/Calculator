@@ -21,7 +21,7 @@ namespace Calculator.Controllers
         }
 
         [HttpGet("GetProduc")]
-        public string Post(string name)
+        public string Post(string name,int start,int end)
         {
             var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
             var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json",Method.Post);
@@ -33,7 +33,7 @@ namespace Calculator.Controllers
 " + "\n" +
             @"    ""query"": ""Trade_Item_Description like '" +name+ @"%'"",
 " + "\n" +
-            @"    ""get_chunks"": { ""start"": 0, ""rows"": 10 }
+            @"    ""get_chunks"": { ""start"":"+ start+@", ""rows"":"+ end+@" }
 " + "\n" +
             @"}";
 
