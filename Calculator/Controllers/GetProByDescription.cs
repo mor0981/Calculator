@@ -71,10 +71,10 @@ namespace Calculator.Controllers
             request.AddHeader("Content-Type", "application/jpg");
             request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
             RestResponse response = client.Execute(request);
-            return response.Content; 
-            //JObject v = JObject.Parse(response.Content);
-            //string b = v.GetValue("file").ToString();
-            //return b;
+            //return response.Content; 
+            JObject v = JObject.Parse(response.Content);
+            string b = v.GetValue("file").ToString();
+            return b;
         }
     }
 }
