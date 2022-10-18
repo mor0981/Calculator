@@ -32,7 +32,7 @@ namespace Calculator.Controllers
             request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
             var body = @"{
 " + "\n" +
-            @"    ""query"": ""Trade_Item_Description like '" +name+ @"%'"",
+            @"    ""query"": ""Trade_Item_Description like '%" +name+ @"%'"",
 " + "\n" +
             @"    ""get_chunks"": { ""start"":"+ start+@", ""rows"":"+ row+@" }
 " + "\n" +
