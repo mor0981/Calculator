@@ -21,6 +21,13 @@ namespace Calculator.Controllers
     [EnableCors("MyCors")]
     public class GetProByDescription : ControllerBase
     {
+        private IMongoCollection<Producs> _producs;
+
+        public GetProByDescription (IMongoClient client)
+        {
+            var mongodb = client.GetDatabase("Producs");
+            _producs = mongodb.GetCollection<Producs>("Producs");
+        }
         [HttpGet]
         public IActionResult Get()
         {
@@ -125,18 +132,20 @@ namespace Calculator.Controllers
 
         }
 
+        
+
 
 
         [HttpGet("GetProducMongoDb")]
         public string GetProducMongoDb(string serch, int start)
         {
-            MongoClient dbClient = new MongoClient("mongodb+srv://mor0981:m12661266@cluster0.5ze2god.mongodb.net/?retryWrites=true&w=majority");
-            var dblist = dbClient.ListDatabases().ToList();
-            var mongodb = dbClient.GetDatabase("Producs");
-            var producs = mongodb.GetCollection<Producs>("Producs");
-            var builder = Builders<BsonDocument>.Filter;
+            //MongoClient dbClient = new MongoClient("mongodb+srv://mor0981:m12661266@cluster0.5ze2god.mongodb.net/?retryWrites=true&w=majority");
+            //var dblist = dbClient.ListDatabases().ToList();
+            //var mongodb = dbClient.GetDatabase("Producs");
+            //var producs = mongodb.GetCollection<Producs>("Producs");
+            //var builder = Builders<BsonDocument>.Filter;
             var filter = new BsonDocument("Trade_Item_Description", new Regex(serch));
-            var p = producs.Find(filter).Limit(5).Skip(start).ToList();
+            var p = _producs.Find(filter).Limit(5).Skip(start).ToList();
             var json = JsonConvert.SerializeObject(p);
             return json.ToString();
         }
