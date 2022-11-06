@@ -111,7 +111,7 @@ namespace Calculator.Controllers
             request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
             var body = @"{
 " + "\n" +
-            @"    ""query"": ""Trade_Item_Description like '" + name + @"%'"",
+            @"    ""query"": ""Trade_Item_Description like '%" + name + @"%'"",
 " + "\n" +
             @"    ""get_chunks"": { ""start"":" + start + @", ""rows"":" + row + @" }
 " + "\n" +
@@ -128,7 +128,7 @@ namespace Calculator.Controllers
 
 
         [HttpGet("GetProducMongoDb")]
-        public string GetProducMongoDb(string serch)
+        public string GetProducMongoDb(string serch, int start)
         {
             MongoClient dbClient = new MongoClient("mongodb+srv://mor0981:m12661266@cluster0.5ze2god.mongodb.net/?retryWrites=true&w=majority");
             var dblist = dbClient.ListDatabases().ToList();
@@ -136,7 +136,7 @@ namespace Calculator.Controllers
             var producs = mongodb.GetCollection<Producs>("Producs");
             var builder = Builders<BsonDocument>.Filter;
             var filter = new BsonDocument("Trade_Item_Description", new Regex(serch));
-            var p = producs.Find(filter).ToList();
+            var p = producs.Find(filter).Limit(5).Skip(start).ToList();
             var json = JsonConvert.SerializeObject(p);
             return json.ToString();
         }
