@@ -10,6 +10,9 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp.Response;
 using System.Data;
+using MongoDB.Driver;
+using MongoDB.Bson;
+using System.Text.RegularExpressions;
 
 namespace Calculator.Controllers
 {
@@ -63,28 +66,79 @@ namespace Calculator.Controllers
                 request2.AddParameter("application/json", body, ParameterType.RequestBody);
                 response = client.Execute(request2);
 
-                //if(response.Content.Length == 4)
-                //{
-                //    IFirebaseConfig config = new FirebaseConfig
-                //    {
-                //        AuthSecret= "X3wT8MbsCTGnPA2WfXDSBTW5TpCoz6BrfGpKP1Nx",
-                //        BasePath= "https://calculator-960eb-default-rtdb.firebaseio.com/"
-                //    };
-                //    IFirebaseClient fclient;
-                //    fclient = new FireSharp.FirebaseClient(config);
-                //    if(fclient!=null)
-                //    {
-                //        var result = fclient.Get("0/");
-                //        Producs obj = result.ResultAs<Producs>();
-
-                //    }
-                //}
-
             }
 
             return response.Content;
 
 
+        }
+
+        [HttpGet("GetProducStart")]
+        public string GetProducStart(string name, int start)
+        {
+            int row = 5;
+            var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
+            var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json", Method.Post);
+            request.AddHeader("Authorization", "Basic VG9wYXo6Zk82QDE3WDQ=");
+            request.AddHeader("Access-Control-Allow-Origin", "*");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
+            var body = @"{
+" + "\n" +
+            @"    ""query"": ""Trade_Item_Description like '" + name + @"%'"",
+" + "\n" +
+            @"    ""get_chunks"": { ""start"":" + start + @", ""rows"":" + row + @" }
+" + "\n" +
+            @"}";
+
+
+            request.AddParameter("application/json", body, ParameterType.RequestBody);
+            RestResponse response = client.Execute(request);
+            return response.Content;
+
+
+        }
+
+        [HttpGet("GetProducContain")]
+        public string GetProducContain(string name, int start)
+        {
+            int row = 5;
+            var client = new RestClient("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json");
+            var request = new RestRequest("https://fe.gs1-hq.mk101.signature-it.com/external/app_query/select_query.json", Method.Post);
+            request.AddHeader("Authorization", "Basic VG9wYXo6Zk82QDE3WDQ=");
+            request.AddHeader("Access-Control-Allow-Origin", "*");
+            request.AddHeader("Content-Type", "application/json");
+            request.AddHeader("Cookie", "SIGSID=t6elmgal7gi6sffbc3k35e6jb7");
+            var body = @"{
+" + "\n" +
+            @"    ""query"": ""Trade_Item_Description like '" + name + @"%'"",
+" + "\n" +
+            @"    ""get_chunks"": { ""start"":" + start + @", ""rows"":" + row + @" }
+" + "\n" +
+            @"}";
+
+
+            request.AddParameter("application/json", body, ParameterType.RequestBody);
+            RestResponse response = client.Execute(request);
+            return response.Content;
+
+
+        }
+
+
+
+        [HttpGet("GetProducMongoDb")]
+        public string GetProducMongoDb(string serch)
+        {
+            MongoClient dbClient = new MongoClient("mongodb+srv://mor0981:m12661266@cluster0.5ze2god.mongodb.net/?retryWrites=true&w=majority");
+            var dblist = dbClient.ListDatabases().ToList();
+            var mongodb = dbClient.GetDatabase("Producs");
+            var producs = mongodb.GetCollection<Producs>("Producs");
+            var builder = Builders<BsonDocument>.Filter;
+            var filter = new BsonDocument("Trade_Item_Description", new Regex(serch));
+            var p = producs.Find(filter).ToList();
+            var json = JsonConvert.SerializeObject(p);
+            return json.ToString();
         }
 
         [HttpGet("GetDetails")]
